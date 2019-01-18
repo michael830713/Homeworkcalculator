@@ -182,4 +182,23 @@
         app:layout_constraintStart_toEndOf="@+id/imageView18"
         app:srcCompat="@drawable/calculator_divide" />
 
+    <TextView
+        android:id="@+id/Result"
+        android:layout_width="295dp"
+        android:layout_height="73dp"
+        android:text="3.1415926"
+        android:textColor="@android:color/white"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/CalculationFormula"
+        android:layout_width="189dp"
+        android:layout_height="46dp"
+        android:text="3+0.1415926"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/Result"
+        app:layout_constraintEnd_toEndOf="@+id/barrier2" />
+
 </android.support.constraint.ConstraintLayout>
