@@ -188,7 +188,7 @@
         app:srcCompat="@drawable/calculator_minus" />
 
     <ImageView
-        android:id="@+id/buttonTimes"
+        android:id="@+id/buttonMultiply"
         style="@style/icons"
 
         app:layout_constraintBottom_toTopOf="@+id/guidelineHor3"
@@ -228,7 +228,8 @@
         android:id="@+id/CalculationFormula"
         android:layout_width="379dp"
         android:layout_height="46dp"
-        android:text="3+0.1415926"
+        android:hint="Formula"
+        android:textColorHint="#b2c7ea"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/Result"
         app:layout_constraintEnd_toEndOf="parent" />
