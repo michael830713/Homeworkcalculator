@@ -209,7 +209,6 @@
         android:id="@+id/buttonDivide"
         style="@style/icons"
         app:layout_constraintBottom_toTopOf="@+id/guidelineHor4"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineRightVertical"
         app:srcCompat="@drawable/calculator_divide" />
 
@@ -227,7 +226,7 @@
 
     <TextView
         android:id="@+id/CalculationFormula"
-        android:layout_width="189dp"
+        android:layout_width="379dp"
         android:layout_height="46dp"
         android:text="3+0.1415926"
         android:textSize="30sp"
