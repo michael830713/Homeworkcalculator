@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView minus;
     private ImageView multiply;
     private ImageView divide;
+    private ImageView clear;
     private TextView formula;
     private TextView result;
 
@@ -92,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 formula.setText(formula.getText().toString() + "9");
             }
         });
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formula.setText("");
+            }
+        });
 
 
 
@@ -113,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         minus = (ImageView) findViewById(R.id.buttonMinus);
         multiply = (ImageView) findViewById(R.id.buttonMultiply);
         divide = (ImageView) findViewById(R.id.buttonDivide);
+        clear = (ImageView) findViewById(R.id.buttonClear);
 
 
         formula = (TextView) findViewById(R.id.CalculationFormula);
