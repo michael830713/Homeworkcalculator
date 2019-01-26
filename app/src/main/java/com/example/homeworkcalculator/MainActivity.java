@@ -26,7 +26,16 @@ public class MainActivity extends AppCompatActivity {
     private ImageView dot;
     private TextView formula;
     private TextView result;
+    private double value1;
+    private double value2;
 
+
+    private static final char ADDITION = '+';
+    private static final char SUBTRACTION = '-';
+    private static final char MULTIPLICATION = '*';
+    private static final char DIVISION = '/';
+
+    private char CURRENT_ACTION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,27 +103,38 @@ public class MainActivity extends AppCompatActivity {
                 formula.setText(formula.getText().toString() + "9");
             }
         });
+
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                compute();
+                CURRENT_ACTION = ADDITION;
                 formula.setText(formula.getText().toString() + "+");
+
             }
         });
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                compute();
+                CURRENT_ACTION = SUBTRACTION;
                 formula.setText(formula.getText().toString() + "-");
             }
         });
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                compute();
+                CURRENT_ACTION = MULTIPLICATION;
                 formula.setText(formula.getText().toString() + "x");
             }
         });
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                compute();
+                CURRENT_ACTION = DIVISION;
                 formula.setText(formula.getText().toString() + "/");
             }
         });
@@ -130,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
                 formula.setText("");
             }
         });
+    }
 
-
-
+    private void compute(){
 
     }
 
