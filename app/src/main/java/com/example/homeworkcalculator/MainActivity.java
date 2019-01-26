@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private static final char MULTIPLICATION = '*';
     private static final char DIVISION = '/';
 
-    private char CURRENT_ACTION;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,19 +118,15 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 getInputValue("+");
-
-                CURRENT_ACTION = ADDITION;
-
                 formula.setText(formula.getText().toString() + "+");
-
             }
         });
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getInputValue("-");
-                CURRENT_ACTION = SUBTRACTION;
                 formula.setText(formula.getText().toString() + "-");
             }
         });
@@ -137,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getInputValue("*");
-
-                CURRENT_ACTION = MULTIPLICATION;
                 formula.setText(formula.getText().toString() + "*");
             }
         });
@@ -146,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getInputValue("/");
-                CURRENT_ACTION = DIVISION;
                 formula.setText(formula.getText().toString() + "/");
+
             }
         });
         dot.setOnClickListener(new View.OnClickListener() {
@@ -159,14 +154,8 @@ public class MainActivity extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                formula.setText("");
-                mResult.setText("");
-                valueResult = 0;
-                value2 =0;
+                clear();
                 isFirstTime = true;
-                savedOperator = new ArrayList<>();
-                savedValue = new ArrayList<>();
-
             }
         });
         Equ.setOnClickListener(new View.OnClickListener() {
@@ -179,20 +168,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void getInputValue(String operator) {
-        if (isFirstTime == true){
-            value2 = Double.parseDouble(formula.getText().toString());
-            isFirstTime = false;
-            valueLength = formula.getText().toString().length();
-        }
-        else {
-            value2 = Double.parseDouble(formula.getText().toString().substring(valueLength + 1));
-            valueLength = formula.getText().toString().length();
-        }
-        savedValue.add(value2);
-        if (!operator.equals("=")){
-            savedOperator.add(operator);
+        try {
+            if (isFirstTime == true) {
+                value2 = Double.parseDouble(formula.getText().toString());
+                isFirstTime = false;
+                valueLength = formula.getText().toString().length();
+            } else {
+                value2 = Double.parseDouble(formula.getText().toString().substring(valueLength + 1));
+                valueLength = formula.getText().toString().length();
+            }
+            savedValue.add(value2);
+            if (!operator.equals("=")) {
+                savedOperator.add(operator);
+            }
+        } catch (NumberFormatException nfe){
+            clear();
         }
     }
+
 
     private void compute(){
         for (int i = 0; i<savedOperator.size(); i++){
@@ -203,10 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 temp.add(result);
                 temp.addAll(savedValue.subList(i+2, savedValue.size()));
                 savedValue = temp;
+
                 List<String> tempOpt = new ArrayList<>();
-
                 tempOpt = savedOperator.subList(0, i);
-
                 tempOpt.addAll(savedOperator.subList(i+1, savedOperator.size()));
                 savedOperator = tempOpt;
                 compute();
@@ -263,8 +255,23 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-        mResult.setText(savedValue.get(0).toString());
+        try {
+            mResult.setText(savedValue.get(0).toString());
+        }catch (IndexOutOfBoundsException ioe){
+            clear();
+        }
 
+
+    }
+
+    private void clear() {
+        formula.setText("");
+        mResult.setText("");
+        valueResult = 0;
+        value2 = 0;
+        // isFirstTime = true;
+        savedOperator = new ArrayList<>();
+        savedValue = new ArrayList<>();
     }
 
     private void setupUIViews(){
