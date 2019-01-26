@@ -2,12 +2,17 @@ package com.example.homeworkcalculator;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "123";
     private ImageView zero;
     private ImageView one;
     private ImageView two;
@@ -24,11 +29,15 @@ public class MainActivity extends AppCompatActivity {
     private ImageView divide;
     private ImageView clear;
     private ImageView dot;
+    private ImageView Equ;
     private TextView formula;
-    private TextView result;
-    private double value1;
+    private TextView mResult;
+    private double valueResult = 0;
     private double value2;
-
+    private int valueLength = 0;
+    private boolean isFirstTime = true;
+    private List<Double> savedValue = new ArrayList<Double>();
+    private List<String> savedOperator = new ArrayList<String>();
 
     private static final char ADDITION = '+';
     private static final char SUBTRACTION = '-';
@@ -108,8 +117,10 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                compute();
+                getInputValue("+");
+
                 CURRENT_ACTION = ADDITION;
+
                 formula.setText(formula.getText().toString() + "+");
 
             }
@@ -117,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                compute();
+                getInputValue("-");
                 CURRENT_ACTION = SUBTRACTION;
                 formula.setText(formula.getText().toString() + "-");
             }
@@ -125,15 +136,16 @@ public class MainActivity extends AppCompatActivity {
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                compute();
+                getInputValue("*");
+
                 CURRENT_ACTION = MULTIPLICATION;
-                formula.setText(formula.getText().toString() + "x");
+                formula.setText(formula.getText().toString() + "*");
             }
         });
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                compute();
+                getInputValue("/");
                 CURRENT_ACTION = DIVISION;
                 formula.setText(formula.getText().toString() + "/");
             }
@@ -148,11 +160,110 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 formula.setText("");
+                mResult.setText("");
+                valueResult = 0;
+                value2 =0;
+                isFirstTime = true;
+                savedOperator = new ArrayList<>();
+                savedValue = new ArrayList<>();
+
+            }
+        });
+        Equ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getInputValue("=");
+                compute();
+
             }
         });
     }
+    private void getInputValue(String operator) {
+        if (isFirstTime == true){
+            value2 = Double.parseDouble(formula.getText().toString());
+            isFirstTime = false;
+            valueLength = formula.getText().toString().length();
+        }
+        else {
+            value2 = Double.parseDouble(formula.getText().toString().substring(valueLength + 1));
+            valueLength = formula.getText().toString().length();
+        }
+        savedValue.add(value2);
+        if (!operator.equals("=")){
+            savedOperator.add(operator);
+        }
+    }
 
     private void compute(){
+        for (int i = 0; i<savedOperator.size(); i++){
+            if (savedOperator.get(i).equals("*")){
+                double result = savedValue.get(i) * savedValue.get(i+1);
+                List<Double> temp = new ArrayList<Double>();
+                temp.addAll(savedValue.subList(0, i));
+                temp.add(result);
+                temp.addAll(savedValue.subList(i+2, savedValue.size()));
+                savedValue = temp;
+                List<String> tempOpt = new ArrayList<>();
+
+                tempOpt = savedOperator.subList(0, i);
+
+                tempOpt.addAll(savedOperator.subList(i+1, savedOperator.size()));
+                savedOperator = tempOpt;
+                compute();
+                break;
+            }
+            else if ("/".equals(savedOperator.get(i))){
+                double result = savedValue.get(i) / savedValue.get(i+1);
+                List<Double> temp = new ArrayList<Double>();
+                temp.addAll(savedValue.subList(0, i));
+                temp.add(result);
+                temp.addAll(savedValue.subList(i+2, savedValue.size()));
+                savedValue = temp;
+                List<String> tempOpt = new ArrayList<>();
+
+                tempOpt = savedOperator.subList(0, i);
+
+                tempOpt.addAll(savedOperator.subList(i+1, savedOperator.size()));
+                savedOperator = tempOpt;
+                compute();
+                break;
+            }
+        }
+        for (int i = 0; i<savedOperator.size(); i++){
+            if ("+".equals(savedOperator.get(i))){
+                double result = savedValue.get(i) + savedValue.get(i+1);
+                List<Double> temp = new ArrayList<Double>();
+                temp.addAll(savedValue.subList(0, i));
+                temp.add(result);
+                temp.addAll(savedValue.subList(i+2, savedValue.size()));
+                savedValue = temp;
+                List<String> tempOpt = new ArrayList<>();
+
+                tempOpt = savedOperator.subList(0, i);
+
+                tempOpt.addAll(savedOperator.subList(i+1, savedOperator.size()));
+                savedOperator = tempOpt;
+                compute();
+                break;
+            }
+            else if ("-".equals(savedOperator.get(i))){
+                double result = savedValue.get(i) - savedValue.get(i+1);
+                List<Double> temp = new ArrayList<Double>();
+                temp.addAll(savedValue.subList(0, i));
+                temp.add(result);
+                temp.addAll(savedValue.subList(i+2, savedValue.size()));
+                savedValue = temp;
+                List<String> tempOpt = new ArrayList<>();
+
+                tempOpt = savedOperator.subList(0, i);
+
+                tempOpt.addAll(savedOperator.subList(i+1, savedOperator.size()));
+                savedOperator = tempOpt;
+                compute();
+                break;
+            }
+        }
+        mResult.setText(savedValue.get(0).toString());
 
     }
 
@@ -169,12 +280,12 @@ public class MainActivity extends AppCompatActivity {
         nine = (ImageView) findViewById(R.id.buttonNine);
         add = (ImageView) findViewById(R.id.buttonPlus);
         minus = (ImageView) findViewById(R.id.buttonMinus);
+        mResult = (TextView) findViewById(R.id.Result);
         multiply = (ImageView) findViewById(R.id.buttonMultiply);
         divide = (ImageView) findViewById(R.id.buttonDivide);
         clear = (ImageView) findViewById(R.id.buttonClear);
         dot = (ImageView) findViewById(R.id.buttonDot);
-
-
+        Equ = (ImageView) findViewById(R.id.buttonEqual);
         formula = (TextView) findViewById(R.id.CalculationFormula);
     }
 }
