@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView multiply;
     private ImageView divide;
     private ImageView clear;
+    private ImageView dot;
     private TextView formula;
     private TextView result;
 
@@ -93,6 +94,36 @@ public class MainActivity extends AppCompatActivity {
                 formula.setText(formula.getText().toString() + "9");
             }
         });
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formula.setText(formula.getText().toString() + "+");
+            }
+        });
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formula.setText(formula.getText().toString() + "-");
+            }
+        });
+        multiply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formula.setText(formula.getText().toString() + "x");
+            }
+        });
+        divide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formula.setText(formula.getText().toString() + "/");
+            }
+        });
+        dot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formula.setText(formula.getText().toString() + ".");
+            }
+        });
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         multiply = (ImageView) findViewById(R.id.buttonMultiply);
         divide = (ImageView) findViewById(R.id.buttonDivide);
         clear = (ImageView) findViewById(R.id.buttonClear);
+        dot = (ImageView) findViewById(R.id.buttonDot);
 
 
         formula = (TextView) findViewById(R.id.CalculationFormula);
